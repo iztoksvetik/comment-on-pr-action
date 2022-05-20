@@ -2,7 +2,7 @@ const core = require('@actions/core');
 const github = require('@actions/github');
 
 const repo = _ => {
-    const [repo, owner] = core.getInput('repo').split("/");
+    const [owner, repo] = core.getInput('repo').split("/");
     return { 'owner': owner, 'repo': repo };
 };
 
