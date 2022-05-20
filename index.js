@@ -11,9 +11,11 @@ try {
 }
 
 async function run() {
-    core.info(core.getInput('repo'));
-    core.info(core.getInput('issue'));
-    core.info(core.getInput('owner'))
+    const [repo, owner] = core.getInput('repo').split("/");
+    core.info(repo);
+    core.info(owner);
+    // core.info(core.getInput('owner'))
+    core.info('---');
     core.info(github.context.repo.repo);
     const token = core.getInput('github-token');
     const client = github.getOctokit(token);
