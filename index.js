@@ -5,7 +5,7 @@ try {
     const token = core.getInput('github-token');
     const client = github.getOctokit(token);
 
-    const response = await client.rest.issues.createComment({
+    const response = client.rest.issues.createComment({
         ...github.context.issue,
         body: '👋 Hello!',
     });
