@@ -13,7 +13,7 @@ try {
     const response = client.rest.issues.listComments({
         ...github.context.repo,
         issue_number: github.context.issue.number
-    }).then(response => core.info(response));
+    }).then(response => core.info(JSON.stringify(response)));
 
     core.info(github.context.actor);
 
