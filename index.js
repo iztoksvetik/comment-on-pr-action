@@ -11,6 +11,9 @@ try {
 }
 
 async function run() {
+    core.info(core.getInput('owner'));
+    core.info(core.getInput('repo'));
+    core.info(core.getInput('issue'));
     const token = core.getInput('github-token');
     const client = github.getOctokit(token);
     const existingComment = await get_existing_comment(client);

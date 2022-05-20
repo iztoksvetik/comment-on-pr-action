@@ -16,10 +16,21 @@ inputs:
     description: 'Should the comment be updated on successive runs or a new one created'
     required: false
     default: 'true'
+  repo:
+    description: 'Repository name'
+    required: false
+    default: ${{ github.repository }}
+  owner:
+    description: 'Repository owner'
+    required: false
+    default: ${{ github.repository_owner }}
+  issue:
+    description: 'Id of the issue to add comment to'
+    required: false
+    default: ${{ github.context.issue.number }}
 outputs:
   comment-id:
     description: 'Id of the created comment'
 runs:
   using: 'node16'
   main: 'index.js'
-  pre-if: github.event.name == "pull_request"
