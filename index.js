@@ -38,7 +38,7 @@ async function run() {
 
 async function create_comment(client, issue) {
     return await client.rest.issues.createComment({
-        ...repo,
+        ...repo(),
         issue_number: issue,
         body: core.getInput('content'),
     });
@@ -46,7 +46,7 @@ async function create_comment(client, issue) {
 
 async function update_comment(client, commentId) {
     return await client.rest.issues.updateComment({
-        ...repo,
+        ...repo(),
         comment_id: commentId,
         body: core.getInput('content')
     });
