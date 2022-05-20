@@ -23,7 +23,7 @@ inputs:
   issue:
     description: 'Id of the issue to add comment to'
     required: false
-    default: ${{ github.event }}
+    default: ${{ github.event.issue.number }}
 outputs:
   comment-id:
     description: 'Id of the created comment'
