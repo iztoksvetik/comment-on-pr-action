@@ -22,3 +22,4 @@ outputs:
 runs:
   using: 'node16'
   main: 'index.js'
+  pre-if: github.event.name == "pull_request"
