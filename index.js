@@ -1,6 +1,11 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
 
+const repo = _ => {
+    const [repo, owner] = core.getInput('repo').split("/");
+    return { 'owner': owner, 'repo': repo };
+};
+
 try {
     run().then(commentId => {
         core.info(`Comment ID: ${commentId}`);
@@ -11,10 +16,10 @@ try {
 }
 
 async function run() {
-    const [repo, owner] = core.getInput('repo').split("/");
     const issue = core.getInput('issue');
-    core.info(`Repo: ${repo}, Owner: ${owner}, Issue: ${issue}`)
-    if (!issue) throw Error('No issue number found. Outside of PRs and Issues set issue nr. as input parameter.')
+    if (!issue) {
+        throw Error('No issue number found. Outside of PRs and Issues set issue nr. as input parameter.');
+    }
     const token = core.getInput('github-token');
     const client = github.getOctokit(token);
     const existingComment = await get_existing_comment(client);
@@ -31,17 +36,17 @@ async function run() {
     return comment.id;
 }
 
-async function create_comment(client) {
+async function create_comment(client, issue) {
     return await client.rest.issues.createComment({
-        ...github.context.repo,
-        issue_number: github.context.issue.number,
+        ...repo,
+        issue_number: issue,
         body: core.getInput('content'),
     });
 }
 
 async function update_comment(client, commentId) {
     return await client.rest.issues.updateComment({
-        ...github.context.repo,
+        ...repo,
         comment_id: commentId,
         body: core.getInput('content')
     });
@@ -52,6 +57,6 @@ async function get_existing_comment(client) {
         ...github.context.repo,
         issue_number: github.context.issue.number
     });
-    // core.debug()
+    core.debug("Get existing comments")
     return comments.find(element => element.user.login === core.getInput('username'))
 }
