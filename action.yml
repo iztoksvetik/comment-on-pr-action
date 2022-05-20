@@ -1,16 +1,31 @@
-name: 'Create PR comment'
-description: 'Greet someone and record the time'
+name: 'Create or update a pull request comment'
+description: 'Enables you to create or update a pull request comment.'
 inputs:
   content:
     description: 'Content of the comment to be posted on PR, may include markdown'
     required: true
-    default: 'Hello from action!'
   github-token:
     description: 'The GitHub token used to create an authenticated client'
     required: false
     default: ${{ github.token }}
+  username:
+    description: 'Username of the holder of token, to find and replace the comment'
+    required: false
+    default: 'github-actions[bot]'
+  update-comment:
+    description: 'Should the comment be updated on successive runs or a new one created'
+    required: false
+    default: 'true'
+  repo:
+    description: 'Repository name'
+    required: false
+    default: ${{ github.repository }}
+  issue:
+    description: 'Id of the issue to add comment to'
+    required: false
+    default: ${{ github.event.number }}
 outputs:
-  comment_id:
+  comment-id:
     description: 'Id of the created comment'
 runs:
   using: 'node16'
