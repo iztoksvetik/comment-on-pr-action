@@ -11,7 +11,6 @@ try {
 }
 
 async function run() {
-    core.info(core.getInput('owner'));
     core.info(core.getInput('repo'));
     core.info(core.getInput('issue'));
     const token = core.getInput('github-token');
