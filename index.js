@@ -17,7 +17,7 @@ try {
 
     core.info(github.context.actor);
 
-    // client.rest.users.getAuthenticated().then(response => console.log(response));
+    client.rest.users.getAuthenticated().then(response => core.info(JSON.stringify(response)));
 
 } catch (error) {
     core.setFailed(error.message);
