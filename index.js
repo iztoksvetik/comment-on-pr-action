@@ -12,11 +12,9 @@ try {
 
 async function run() {
     const [repo, owner] = core.getInput('repo').split("/");
-    core.info(repo);
-    core.info(owner);
-    // core.info(core.getInput('owner'))
-    core.info('---');
-    core.info(github.context.repo.repo);
+    const issue = core.getInput('issue');
+    core.info(`Repo: ${repo}, Owner: ${owner}, Issue: ${issue}`)
+    if (!issue) throw Error('No issue number found. Outside of PRs and Issues set issue nr. as input parameter.')
     const token = core.getInput('github-token');
     const client = github.getOctokit(token);
     const existingComment = await get_existing_comment(client);
@@ -54,5 +52,6 @@ async function get_existing_comment(client) {
         ...github.context.repo,
         issue_number: github.context.issue.number
     });
+    // core.debug()
     return comments.find(element => element.user.login === core.getInput('username'))
 }

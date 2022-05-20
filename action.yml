@@ -20,10 +20,6 @@ inputs:
     description: 'Repository name'
     required: false
     default: ${{ github.repository }}
-  owner:
-    description: 'Repository owner'
-    required: false
-    default: ${{ github.repository_owner }}
   issue:
     description: 'Id of the issue to add comment to'
     required: false
