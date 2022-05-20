@@ -2,7 +2,10 @@ const core = require('@actions/core');
 const github = require('@actions/github');
 
 try {
-    run().then(_ => core.info("Successfully ran"));
+    run().then(commentId => {
+        core.info(`Comment ID: ${commentId}`);
+        core.setOutput('comment-id', commentId);
+    });
 } catch (error) {
     core.setFailed(error.message);
 }
@@ -12,15 +15,16 @@ async function run() {
     const client = github.getOctokit(token);
     const existingComment = await get_existing_comment(client);
     const update = core.getInput('update-comment') === 'true';
+
     if (existingComment && update) {
-        core.info("Comment ID: " + existingComment.id);
-        const response = await update_comment(client, existingComment.id);
-        core.info(JSON.stringify(response, null, 2));
-    } else {
-        core.info("Creating a new comment");
-        const response = await create_comment(client);
-        core.info(JSON.stringify(response, null, 2));
+        core.info("Updating comment: " + existingComment.id);
+        const {data: comment} = await update_comment(client, existingComment.id);
+        return comment.id;
     }
+
+    core.info("Creating a new comment");
+    const {data: comment} = await create_comment(client);
+    return comment.id;
 }
 
 async function create_comment(client) {
