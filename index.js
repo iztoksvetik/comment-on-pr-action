@@ -13,20 +13,22 @@ try {
 async function run() {
     core.info(core.getInput('repo'));
     core.info(core.getInput('issue'));
-    // const token = core.getInput('github-token');
-    // const client = github.getOctokit(token);
-    // const existingComment = await get_existing_comment(client);
-    // const update = core.getInput('update-comment') === 'true';
-    //
-    // if (existingComment && update) {
-    //     core.info("Updating comment: " + existingComment.id);
-    //     const {data: comment} = await update_comment(client, existingComment.id);
-    //     return comment.id;
-    // }
-    //
-    // core.info("Creating a new comment");
-    // const {data: comment} = await create_comment(client);
-    // return comment.id;
+    core.info(core.getInput('owner'))
+    core.info(github.context.repo.repo);
+    const token = core.getInput('github-token');
+    const client = github.getOctokit(token);
+    const existingComment = await get_existing_comment(client);
+    const update = core.getInput('update-comment') === 'true';
+
+    if (existingComment && update) {
+        core.info("Updating comment: " + existingComment.id);
+        const {data: comment} = await update_comment(client, existingComment.id);
+        return comment.id;
+    }
+
+    core.info("Creating a new comment");
+    const {data: comment} = await create_comment(client);
+    return comment.id;
 }
 
 async function create_comment(client) {
