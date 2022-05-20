@@ -57,6 +57,6 @@ async function get_existing_comment(client) {
         ...github.context.repo,
         issue_number: github.context.issue.number
     });
-    core.debug("Get existing comments")
+    core.info("Get existing comments")
     return comments.find(element => element.user.login === core.getInput('username'))
 }
