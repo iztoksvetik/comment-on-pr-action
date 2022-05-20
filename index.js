@@ -21,14 +21,16 @@ async function run() {
         throw Error('No issue number found. Outside of PRs and Issues set issue nr. as input parameter.');
     }
     const token = core.getInput('github-token');
-    const client = github.getOctokit(token);
-    const existingComment = await get_existing_comment(client);
     const update = core.getInput('update-comment') === 'true';
+    const client = github.getOctokit(token);
 
-    if (existingComment && update) {
-        core.info("Updating comment: " + existingComment.id);
-        const {data: comment} = await update_comment(client, existingComment.id);
-        return comment.id;
+    if (update) {
+        const existingComment = await get_existing_comment(client);
+        if (existingComment) {
+            core.info("Updating comment: " + existingComment.id);
+            const {data: comment} = await update_comment(client, existingComment.id);
+            return comment.id;
+        }
     }
 
     core.info("Creating a new comment");
