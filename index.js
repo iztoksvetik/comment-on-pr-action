@@ -32,7 +32,7 @@ async function run() {
     }
 
     core.info("Creating a new comment");
-    const {data: comment} = await create_comment(client);
+    const {data: comment} = await create_comment(client, issue);
     return comment.id;
 }
 
