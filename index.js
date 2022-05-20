@@ -13,11 +13,11 @@ try {
     const response = client.rest.issues.listComments({
         ...github.context.repo,
         issue_number: github.context.issue.number
-    }).then(response => console.log(response));
+    }).then(response => core.info(response));
 
-    console.log(github.context.actor);
+    core.info(github.context.actor);
 
-    client.rest.users.getAuthenticated().then(response => console.log(response));
+    // client.rest.users.getAuthenticated().then(response => console.log(response));
 
 } catch (error) {
     core.setFailed(error.message);
